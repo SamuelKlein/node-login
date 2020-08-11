@@ -3,11 +3,17 @@ version: '3'
 services:
     mysqlsrv:
         image: mysql:5.7
+        command: --default-authentication-plugin=mysql_native_password
         environment:
           MYSQL_ROOT_PASSWORD: "MySql2019!"
           MYSQL_DATABASE: "testedb"
+          MYSQL_USER: 'samuel'
+          MYSQL_PASSWORD: 'MySql2019!'
+          MYSQL_HOST: "%"
         ports:
           - "3306:3306"
+        expose: 
+          - 3306
         volumes:
           - ./db/mysql:/var/lib/mysql
         networks:

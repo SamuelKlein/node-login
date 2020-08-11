@@ -1,31 +1,28 @@
-const mysql = require('mysql');
+import * as mysql from 'mysql';
 
-module.exports = class DB {
 
-    constructor() {
-        this.connection();
-    }
+export class DB {
 
     conect() {
         return mysql.createConnection({
             host: 'localhost',
             port: 3306,
-            user: 'root',
+            user: 'samuel',
             password: 'MySql2019!',
             database: 'testedb'
         });
     }
 
-    exec(sql, res) {
+    exec(sql: any, res: any) {
         const cx = this.conect();
         cx.query(sql, function (error, results, fields) {
             if (error) {
                 console.error(error);
-                res.json(error);
+                res(error);
             } else {
-                res.json(results);
+                res(results);
             }
-            connection.end();
+            cx.end();
             console.log('executou!');
         });
     }
