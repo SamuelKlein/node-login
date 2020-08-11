@@ -10,23 +10,25 @@ app.use(bodyParser.json())
 
 app.use(express.static('public'));
 
-app.get('/login', (req: any, res: any) => {
-    const db = new DB();
-    db.exec(`select count(*) from user`, function(resp: any) {
-       console.log(resp);
-       if (resp > 0) {
-           res.send({
-               msg: "Login com sucesso"
-           });
-       } else {
-           res.send({
-               msg: "Erro ao fazer logins"
-           });
-       }
-    });
-
-
- });
+app.get('/login', async (req: any, res: any) => {
+    try {
+        const db = new DB();
+        const resp = await db.exec(`select * from test`);
+        console.log(resp.rows);
+        // if (resp > 0) {
+            res.send({
+                msg: "Login com sucesso",
+                retorno: resp.rows
+            });
+        // } else {
+        //     res.send({
+        //         msg: "Erro ao fazer logins"
+        //     });
+        // }
+    } catch (error) {
+        res.send(error);
+    }
+});
 
 app.post("/login", (req, res) => {
     // const body = req.body;
@@ -48,9 +50,9 @@ app.post("/login", (req, res) => {
     res.send({
         msg: "Login com sucesso"
     });
-    
-} );
+
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`Example app listening at http://localhost:${port}`);
 })

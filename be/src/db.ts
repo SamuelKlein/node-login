@@ -1,30 +1,27 @@
-import * as mysql from 'mysql';
+import { Pool } from 'pg';
 
 
 export class DB {
 
-    conect() {
-        return mysql.createConnection({
-            host: 'localhost',
-            port: 3306,
+    async conect() {
+        const c = new Pool({
             user: 'samuel',
-            password: 'MySql2019!',
-            database: 'testedb'
+            host: 'db',
+            database: 'samuel_des',
+            password: 'postgres',
+            port: Number('5432'),
+            application_name: `Login Nodejs`,
         });
+
+
+        return await c.connect();
     }
 
-    exec(sql: any, res: any) {
-        const cx = this.conect();
-        cx.query(sql, function (error, results, fields) {
-            if (error) {
-                console.error(error);
-                res(error);
-            } else {
-                res(results);
-            }
-            cx.end();
-            console.log('executou!');
-        });
+    async exec(sql: any) {
+        const cx = await this.conect();
+        const res = await cx.query(sql, []);
+        console.log(res.rows);
+        return res;
     }
 
 };
